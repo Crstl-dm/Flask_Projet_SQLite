@@ -12,8 +12,6 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'  # Clé secrète pour les sessions
 def est_authentifie():
     return session.get('authentifie')
 
-def est_authentifie_user():
-    return session.get('authentifie_user')
     
 @app.route('/')
 def hello_world():
@@ -42,20 +40,6 @@ def authentification():
 
     return render_template('formulaire_authentification.html', error=False)
 
-@app.route('/authentification_user', methods=['GET', 'POST'])
-def authentification_user():
-    if request.method == 'POST':
-        # Vérifier les identifiants de l'utilisateur normal
-        if request.form['username'] == 'user' and request.form['password'] == '12345':
-            session['authentifie_user'] = True
-            # Rediriger vers la route fiche_nom après une authentification réussie
-            return redirect(url_for('Readnom', post_nom='nom_par_defaut'))  # Remplacez 'nom_par_defaut' par une valeur par défaut appropriée
-        else:
-            # Afficher un message d'erreur si les identifiants sont incorrects
-            return render_template('formulaire_authentification.html', error=True)
-
-    return render_template('formulaire_authentification.html', error=False)
-
     
 @app.route('/fiche_client/<int:post_id>')
 def Readfiche(post_id):
@@ -70,9 +54,6 @@ def Readfiche(post_id):
 
 @app.route('/fiche_nom/<string:post_nom>')
 def Readnom(post_nom):
-    if not est_authentifie_user():
-        # Rediriger vers la page d'authentification utilisateur si l'utilisateur n'est pas authentifié
-        return redirect(url_for('authentification_user'))
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM clients WHERE nom = ?', (post_nom,))
@@ -90,6 +71,15 @@ def ReadBDD():
     data = cursor.fetchall()
     conn.close()
     return render_template('read_data.html', data=data)
+
+@app.route('/consultation_livre/')
+def ReadBDDL():
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM livre;')
+    data = cursor.fetchall()
+    conn.close()
+    return render_template('read_data_livre.html', data=data)
 
 @app.route('/enregistrer_client', methods=['GET'])
 def formulaire_client():
@@ -109,6 +99,24 @@ def enregistrer_client():
     conn.commit()
     conn.close()
     return redirect('/consultation/')  # Rediriger vers la page d'accueil après l'enregistrement
+
+@app.route('/enregistrer_livre', methods=['GET'])
+def formulaire_livre():
+    return render_template('formulaire_livre.html')  # afficher le formulaire
+
+@app.route('/enregistrer_livre', methods=['POST'])
+def enregistrer_livre():
+    nom = request.form['nom']
+
+    # Connexion à la base de données
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+
+    # Exécution de la requête SQL pour insérer un nouveau client
+    cursor.execute('INSERT INTO livre (nom) VALUES (?)', (nom))
+    conn.commit()
+    conn.close()
+    return redirect('/consultation_livre/')  # Rediriger vers la page d'accueil après l'enregistrement
                                                                                                                                        
 if __name__ == "__main__":
   app.run(debug=True)
