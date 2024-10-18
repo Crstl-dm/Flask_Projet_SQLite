@@ -13,18 +13,22 @@ CREATE TABLE clients (
 );
 
 -- Table Livres (gestion des livres)
-CREATE TABLE livres (
+CREATE TABLE livre (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    titre TEXT NOT NULL,
-    auteur TEXT NOT NULL,
-    genre TEXT,
-    annee_publication INTEGER,
-    nombre_exemplaires INTEGER NOT NULL CHECK (nombre_exemplaires >= 0),
-    disponible INTEGER NOT NULL DEFAULT 1 CHECK (disponible IN (0, 1))
+    nom TEXT NOT NULL,
 );
+--CREATE TABLE livres (
+  --  id INTEGER PRIMARY KEY AUTOINCREMENT,
+    --titre TEXT NOT NULL,
+    --auteur TEXT NOT NULL,
+    --genre TEXT,
+    --annee_publication INTEGER,
+    --nombre_exemplaires INTEGER NOT NULL CHECK (nombre_exemplaires >= 0),
+    --disponible INTEGER NOT NULL DEFAULT 1 CHECK (disponible IN (0, 1))
+--);
 
 -- Table Emprunts (relation entre clients et livres)
-CREATE TABLE emprunts (
+/*CREATE TABLE emprunts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_client INTEGER NOT NULL,
     id_livre INTEGER NOT NULL,
@@ -33,4 +37,4 @@ CREATE TABLE emprunts (
     CONSTRAINT fk_client FOREIGN KEY (id_client) REFERENCES clients(id),
     CONSTRAINT fk_livre FOREIGN KEY (id_livre) REFERENCES livres(id),
     CONSTRAINT unique_emprunt UNIQUE (id_client, id_livre, date_retour)
-);
+);*/
