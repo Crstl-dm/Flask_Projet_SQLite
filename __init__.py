@@ -41,6 +41,21 @@ def authentification():
             return render_template('formulaire_authentification.html', error=True)
 
     return render_template('formulaire_authentification.html', error=False)
+
+@app.route('/authentification_user', methods=['GET', 'POST'])
+def authentification_user():
+    if request.method == 'POST':
+        # Vérifier les identifiants de l'utilisateur normal
+        if request.form['username'] == 'user' and request.form['password'] == '12345':
+            session['authentifie_user'] = True
+            # Rediriger vers la route fiche_nom après une authentification réussie
+            return redirect(url_for('Readnom', post_nom='nom_par_defaut'))  # Remplacez 'nom_par_defaut' par une valeur par défaut appropriée
+        else:
+            # Afficher un message d'erreur si les identifiants sont incorrects
+            return render_template('formulaire_authentification.html', error=True)
+
+    return render_template('formulaire_authentification.html', error=False)
+
     
 @app.route('/fiche_client/<int:post_id>')
 def Readfiche(post_id):
@@ -53,26 +68,11 @@ def Readfiche(post_id):
     return render_template('read_data.html', data=data)
 
 
-
-@app.route('/test', methods=['GET', 'POST'])
-def authentification_user():
-    if request.method == 'POST':
-        # Vérifier les identifiants
-        if request.form['username'] == 'user' and request.form['password'] == '12345': # password à cacher par la suite
-            session['authentifie_user'] = True
-            # Rediriger vers la route lecture après une authentification réussie
-            return redirect(url_for('lecture'))
-        else:
-            # Afficher un message d'erreur si les identifiants sont incorrects
-            return render_template('ajouter_client.html', error=True)
-
-    return render_template('formulaire_authentification.html', error=False)
-
-
-
-
 @app.route('/fiche_nom/<string:post_nom>')
 def Readnom(post_nom):
+    if not est_authentifie_user():
+        # Rediriger vers la page d'authentification utilisateur si l'utilisateur n'est pas authentifié
+        return redirect(url_for('authentification_user'))
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM clients WHERE nom = ?', (post_nom,))
