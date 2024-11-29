@@ -1,6 +1,6 @@
 -- Suppression des tables existantes si elles existent déjà
 DROP TABLE IF EXISTS clients;
-DROP TABLE IF EXISTS livres;
+DROP TABLE IF EXISTS livre;
 DROP TABLE IF EXISTS emprunts;
 
 -- Table Clients (utilisateurs)
