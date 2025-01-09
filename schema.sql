@@ -13,10 +13,15 @@ CREATE TABLE clients (
 );
 
 -- Table Livres (gestion des livres)
-CREATE TABLE livre (
+CREATE TABLE livres (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nom TEXT NOT NULL,
+    titre TEXT NOT NULL,
+    auteur TEXT NOT NULL,
+    genre TEXT,
+    stock_total INTEGER NOT NULL,
+    stock_disponible INTEGER NOT NULL
 );
+
 --CREATE TABLE livres (
   --  id INTEGER PRIMARY KEY AUTOINCREMENT,
     --titre TEXT NOT NULL,
