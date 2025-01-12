@@ -86,9 +86,10 @@ def enregistrer_client():
     if request.method == 'POST':
         nom = request.form['nom']
         prenom = request.form['prenom']
+        adresse = request.form['adresse']
         conn = sqlite3.connect('database.db')
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO clients (nom, prenom, adresse) VALUES (?, ?, ?)', (nom, prenom, "Adresse inconnue"))
+        cursor.execute('INSERT INTO clients (nom, prenom, adresse) VALUES (?, ?, ?)', (nom, prenom, adresse))
         conn.commit()
         conn.close()
         return redirect('/consultation/')
