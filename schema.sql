@@ -22,24 +22,13 @@ CREATE TABLE livres (
     stock_disponible INTEGER NOT NULL
 );
 
---CREATE TABLE livres (
-  --  id INTEGER PRIMARY KEY AUTOINCREMENT,
-    --titre TEXT NOT NULL,
-    --auteur TEXT NOT NULL,
-    --genre TEXT,
-    --annee_publication INTEGER,
-    --nombre_exemplaires INTEGER NOT NULL CHECK (nombre_exemplaires >= 0),
-    --disponible INTEGER NOT NULL DEFAULT 1 CHECK (disponible IN (0, 1))
---);
-
--- Table Emprunts (relation entre clients et livres)
-/*CREATE TABLE emprunts (
+-- Table Emprunts (gestion des emprunts)
+CREATE TABLE emprunts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    id_client INTEGER NOT NULL,
-    id_livre INTEGER NOT NULL,
-    date_emprunt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    client_id INTEGER NOT NULL,
+    livre_id INTEGER NOT NULL,
+    date_emprunt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     date_retour TIMESTAMP,
-    CONSTRAINT fk_client FOREIGN KEY (id_client) REFERENCES clients(id),
-    CONSTRAINT fk_livre FOREIGN KEY (id_livre) REFERENCES livres(id),
-    CONSTRAINT unique_emprunt UNIQUE (id_client, id_livre, date_retour)
-);*/
+    FOREIGN KEY (client_id) REFERENCES clients(id),
+    FOREIGN KEY (livre_id) REFERENCES livres(id)
+);
