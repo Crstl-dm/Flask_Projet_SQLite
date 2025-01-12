@@ -80,7 +80,7 @@ def ReadBDDL():
     data = cursor.fetchall()
     conn.close()
     return render_template('read_data_livres.html', data=data)
-
+    
 @app.route('/enregistrer_client', methods=['GET', 'POST'])
 def enregistrer_client():
     if request.method == 'POST':
