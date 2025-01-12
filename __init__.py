@@ -94,23 +94,20 @@ def enregistrer_client():
         return redirect('/consultation/')
     return render_template('formulaire.html')
 
-@app.route('/enregistrer_livre', methods=['GET'])
-def formulaire_livre():
-    return render_template('formulaire_livre.html')  # afficher le formulaire
-
-@app.route('/enregistrer_livre', methods=['POST'])
+@app.route('/enregistrer_livre', methods=['GET', 'POST'])
 def enregistrer_livre():
-    nom = request.form['nom']
-
-    # Connexion à la base de données
-    conn = sqlite3.connect('database.db')
-    cursor = conn.cursor()
-
-    # Exécution de la requête SQL pour insérer un nouveau client
-    cursor.execute('INSERT INTO livre (nom) VALUES (?)', (nom))
-    conn.commit()
-    conn.close()
-    return redirect('/consultation_livre/')  # Rediriger vers la page d'accueil après l'enregistrement
+    if request.method == 'POST':
+        titre = request.form['titre']
+        auteur = request.form['auteur']
+        genre = request.form['genre']
+        stock = int(request.form['stock'])
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO livres (titre, auteur, genre, stock_total, stock_disponible) VALUES (?, ?, ?, ?, ?)', (titre, auteur, genre, stock, stock))
+        conn.commit()
+        conn.close()
+        return redirect('/consultation_livres/')
+    return render_template('formulaire_livres.html')
                                                                                                                                        
 if __name__ == "__main__":
   app.run(debug=True)
