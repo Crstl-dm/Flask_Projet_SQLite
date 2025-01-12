@@ -101,10 +101,10 @@ def enregistrer_livre():
         titre = request.form['titre']
         auteur = request.form['auteur']
         genre = request.form['genre']
-        stock = int(request.form['stock'])
+        #stock = int(request.form['stock'])
         conn = sqlite3.connect('database.db')
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO livres (titre, auteur, genre, stock_total, stock_disponible) VALUES (?, ?, ?, ?, ?)', (titre, auteur, genre, stock, stock))
+        cursor.execute('INSERT INTO livres (titre, auteur, genre, stock_total, stock_disponible) VALUES (?, ?, ?, ?, ?)', (titre, auteur, genre, 5, 1))
         conn.commit()
         conn.close()
         return redirect('/consultation_livres/')
