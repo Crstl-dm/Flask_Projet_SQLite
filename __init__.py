@@ -81,24 +81,18 @@ def ReadBDDL():
     conn.close()
     return render_template('read_data_livres.html', data=data)
 
-@app.route('/enregistrer_client', methods=['GET'])
-def formulaire_client():
-    return render_template('formulaire.html')  # afficher le formulaire
-
-@app.route('/enregistrer_client', methods=['POST'])
+@app.route('/enregistrer_client', methods=['GET', 'POST'])
 def enregistrer_client():
-    nom = request.form['nom']
-    prenom = request.form['prenom']
-
-    # Connexion à la base de données
-    conn = sqlite3.connect('database.db')
-    cursor = conn.cursor()
-
-    # Exécution de la requête SQL pour insérer un nouveau client
-    cursor.execute('INSERT INTO clients (created, nom, prenom, adresse) VALUES (?, ?, ?, ?)', (1002938, nom, prenom, "ICI"))
-    conn.commit()
-    conn.close()
-    return redirect('/consultation/')  # Rediriger vers la page d'accueil après l'enregistrement
+    if request.method == 'POST':
+        nom = request.form['nom']
+        prenom = request.form['prenom']
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO clients (nom, prenom, adresse) VALUES (?, ?, ?)', (nom, prenom, "Adresse inconnue"))
+        conn.commit()
+        conn.close()
+        return redirect('/consultation/')
+    return render_template('formulaire.html')
 
 @app.route('/enregistrer_livre', methods=['GET'])
 def formulaire_livre():
