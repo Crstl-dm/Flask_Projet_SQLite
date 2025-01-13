@@ -95,7 +95,7 @@ def enregistrer_client():
         return redirect('/consultation/')
     return render_template('formulaire.html')
 
-@app.route('/enregistrer_livre', methods=['GET', 'POST'])
+@app.route('/enregistrer_livres', methods=['GET', 'POST'])
 def enregistrer_livre():
     if request.method == 'POST':
         titre = request.form['titre']
