@@ -76,10 +76,10 @@ def ReadBDD():
 def ReadBDDL():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM clients;')
+    cursor.execute('SELECT * FROM livres;')
     data = cursor.fetchall()
     conn.close()
-    return render_template('read_data.html', data=data)
+    return render_template('read_data_livres.html', data=data)
     
 @app.route('/enregistrer_client', methods=['GET', 'POST'])
 def enregistrer_client():
@@ -93,7 +93,7 @@ def enregistrer_client():
         conn.commit()
         conn.close()
         return redirect('/consultation/')
-    return render_template('formulaire.html')
+    return render_template('formulaire_livres.html')
 
 @app.route('/enregistrer_livre', methods=['GET', 'POST'])
 def enregistrer_livre():
