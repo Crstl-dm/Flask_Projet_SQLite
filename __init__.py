@@ -93,7 +93,7 @@ def enregistrer_client():
         conn.commit()
         conn.close()
         return redirect('/consultation/')
-    return render_template('formulaire_livres.html')
+    return render_template('formulaire.html')
 
 @app.route('/enregistrer_livre', methods=['GET', 'POST'])
 def enregistrer_livre():
